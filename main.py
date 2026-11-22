@@ -208,7 +208,7 @@ FONT = {
 "L": ("10000", "10000", "10000", "10000", "10000", "10000", "11111"),
 "M": ("10001", "11011", "10101", "10101", "10001", "10001", "10001"),
 "N": ("10001", "11001", "10101", "10011", "10001", "10001", "10001"),
-"O": ("01110", "11001", "11001", "11001", "11001", "11001", "01110"),
+"O": ("01110", "10001", "10001", "10001", "10001", "10001", "01110"),
 "P": ("11110", "10001", "10001", "11110", "10000", "10000", "10000"),
 "Q": ("01110", "10001", "10001", "10001", "10101", "10010", "01101"),
 "R": ("11110", "10001", "10001", "11110", "10100", "10010", "10001"),
@@ -233,11 +233,11 @@ FONT = {
 }
 
 FONT.update({
-"a": ("00000", "00000", "01110", "00011", "01111", "11001", "01111"),
+"a": ("00000", "00000", "01110", "00001", "01111", "10001", "01111"),
 "b": ("10000", "10000", "10110", "11001", "10001", "10001", "11110"),
 "c": ("00000", "00000", "01110", "10000", "10000", "10001", "01110"),
 "d": ("00001", "00001", "01101", "10011", "10001", "10001", "01111"),
-"e": ("00000", "00000", "01110", "11001", "11111", "11000", "01110"),
+"e": ("00000", "00000", "01110", "10001", "11111", "10000", "01110"),
 "f": ("00110", "01001", "01000", "11110", "01000", "01000", "01000"),
 "g": ("00000", "01111", "10001", "10001", "01111", "00001", "01110"),
 "h": ("10000", "10000", "10110", "11001", "10001", "10001", "10001"),
@@ -247,7 +247,7 @@ FONT.update({
 "l": ("01100", "00100", "00100", "00100", "00100", "00100", "01110"),
 "m": ("00000", "00000", "11010", "10101", "10101", "10101", "10101"),
 "n": ("00000", "00000", "10110", "11001", "10001", "10001", "10001"),
-"o": ("00000", "00000", "01110", "11001", "11001", "11001", "01110"),
+"o": ("00000", "00000", "01110", "10001", "10001", "10001", "01110"),
 "p": ("00000", "00000", "10110", "11001", "10001", "11110", "10000"),
 "q": ("00000", "00000", "01101", "10011", "10001", "01111", "00001"),
 "r": ("00000", "00000", "10110", "11001", "10000", "10000", "10000"),
@@ -326,10 +326,9 @@ def draw_text(cv, x, y, s, size, color, align="left"):
     u = size / 7.0
     cx = float(x)
     bw = max(1, int(math.ceil(u)))
-    # Bold the strokes (one extra px wide) at readable sizes so the
-    # thin 5x7 outlines close up into solid letters; tiny pin numbers
-    # stay unbolded or they mush.
-    wdt = bw + 1 if size >= 11 else bw
+    # No bolding: strokes stay one cell wide so the text reads light.
+    # Tiny pin numbers were never bolded either.
+    wdt = bw
     for ch in s:
         g = FONT.get(ch)
         lo, hi = _glyph_span(ch)
@@ -1009,16 +1008,16 @@ def build():
     cv.fill(0, 0, W, 6, RED)
 
     # masthead
-    draw_text(cv, W // 2, 10, "THE SUNDAY WORLD", 36, INK, "center")
+    draw_text(cv, W // 2, 10, "THE SUNDAY WORLD", 33, INK, "center")
     cv.fill(W // 2 - 210, 50, 420, 2, RED)
-    draw_text(cv, W // 2, 56, "SUNDAY 22 NOVEMBER 2026", 17, REDDK, "center")
+    draw_text(cv, W // 2, 56, "SUNDAY 22 NOVEMBER 2026", 16, REDDK, "center")
     draw_text(cv, 14, 24, "SUNDAY EDITION", 12, INK2)
     draw_text(cv, W - 14, 24, "ONE DAY, WHOLE WORLD", 12, INK2, "right")
 
     # count strip
     cv.fill(0, 76, W, 20, NAVY)
     draw_text(cv, W // 2, 80, "38 STORIES - 7 REGIONS - EVERY ONE DATED SUNDAY 22 NOVEMBER 2026",
-              14, WHITE, "center")
+              13, WHITE, "center")
 
     # UTC timeline strip
     draw_text(cv, 10, 100, "SUNDAY IN UTC", 13, INK)
@@ -1043,14 +1042,14 @@ def build():
         cv.fill(x, y0 + 4, w, 232, WHITE)
         cv.rect(x, y0 + 4, w, 232, GREYDK)
         chip(cv, x + 8, y0 + 12, st["n"], c, 22)
-        draw_text(cv, x + 36, y0 + 14, st["kicker"], 12, shade(c, 0.35))
+        draw_text(cv, x + 36, y0 + 14, st["kicker"], 11, shade(c, 0.35))
         yy = y0 + 34
         for ln in st["lines"]:
-            draw_text(cv, x + 10, yy, ln, 28, INK)
+            draw_text(cv, x + 10, yy, ln, 26, INK)
             yy += 30
         st["scene"](cv, x + 10, y0 + 126, w - 20, 76, c)
-        bl = wrap(st["body"], 12, w - 20)
-        draw_lines(cv, x + 10, y0 + 206, bl[:2], 12, INK2, 14)
+        bl = wrap(st["body"], 11, w - 20)
+        draw_lines(cv, x + 10, y0 + 206, bl[:2], 11, INK2, 13)
 
     # region strip
     cv.fill(0, 362, W, 22, PAPER2)
@@ -1078,14 +1077,14 @@ def build():
         cv.rect(x, y + 3, 62, 42, tint(c, 0.4))
         st["scene"](cv, x, y + 3, 62, 42, c)
         chip(cv, x + 2, y + 4, st["n"], c, 17)
-        draw_text(cv, x + 70, y + 4, st["head"], 16, INK)
-        bl = wrap(st["body"], 12, 502 - 70)
-        draw_lines(cv, x + 70, y + 23, bl[:2], 12, INK2, 14)
+        draw_text(cv, x + 70, y + 4, st["head"], 15, INK)
+        bl = wrap(st["body"], 11, 502 - 70)
+        draw_lines(cv, x + 70, y + 23, bl[:2], 11, INK2, 13)
 
     # map band: dotted world map, continents as a lon/lat dot grid
     cv.fill(0, 629, W, 104, (226, 236, 242))
     draw_text(cv, 10, 634, "WHERE IT HAPPENED - 38 STORIES, 38 PINS, EACH IN ITS OWN COLOUR",
-              13, INK)
+              12, INK)
 
     def mx(lon):
         return 8 + (lon + 180.0) / 360.0 * 1008
@@ -1117,7 +1116,7 @@ def build():
 
     # also-on list: 2 columns x 13 rows, every row with its own pictogram
     draw_text(cv, 10, 739, "ALSO ON THIS SUNDAY - 25 MORE STORIES, EACH WITH ITS OWN PICTURE",
-              15, INK)
+              14, INK)
     cv.fill(10, 757, 1004, 2, RED)
     for i, (n, txt) in enumerate(ALSO):
         col = i // 13
@@ -1128,7 +1127,7 @@ def build():
         # Fixed 20px icon gutter; text starts at a fixed x after it.
         cv.fill(x, int(y), 20, 14, tint(c, 0.85))
         ICONS[n](cv, x + 3, int(y), c)
-        draw_text(cv, x + 26, int(y) + 1, str(n) + ". " + txt, 13, INK)
+        draw_text(cv, x + 26, int(y) + 1, str(n) + ". " + txt, 12, INK)
 
     # date-check box
     cv.rect(8, 956, 1008, 44, RED, 2)
