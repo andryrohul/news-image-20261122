@@ -1,31 +1,33 @@
-[![make.fun · news-image-20261122](https://make.fun/badge/news-image-20261122.svg)](https://make.fun/bounty/news-image-20261122?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261122)
-[![rank](https://make.fun/badge/news-image-20261122/andryrohul/news-image-20261122/rank.svg)](https://make.fun/bounty/news-image-20261122/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261122)
-[![reward](https://make.fun/badge/news-image-20261122/andryrohul/news-image-20261122/reward.svg)](https://make.fun/bounty/news-image-20261122?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261122)
+# The Sunday Ledger — 22 November 2026
 
-# THE SUNDAY GLOBE — Sunday 22 November 2026
+[![news-image-20261122](https://make.fun/badge/news-image-20261122.svg)](https://make.fun/bounty/news-image-20261122)
+[![rank](https://make.fun/badge/news-image-20261122/andryrohul/news-image-20261122/rank.svg)](https://make.fun/bounty/news-image-20261122)
+[![reward](https://make.fun/badge/news-image-20261122/andryrohul/news-image-20261122/reward.svg)](https://make.fun/bounty/news-image-20261122)
 
-One page, 36 stories, every one dated Sunday 22 November 2026. A clean
-default newspaper front page: big bold masthead, numbers strip, region
-bars, a UTC timeline of the day, three hero stories and ten secondary
-stories with drawn scenes, a dotted world map with numbered pins, and a
-23-story also-on list grouped by region.
+A picture-led newspaper front page summing up the world's news of
+Sunday 22 November 2026 in one 1024×1024 image: 36 verified stories,
+13 of them with their own drawn scene, a world map with pins, a
+numbers strip, and a DATE CHECK box listing the big stories from
+other days that were deliberately left out.
 
-Every story carries a certainty tag — CONFIRMED, CLAIM, REPORTED,
-PENDING or FORECAST — explained in the legend at the bottom. The red
-DATE CHECK box lists the big stories deliberately left out because they
-happened on earlier days (the 400-drone night, the Peru earthquake,
-'El Chapo Isidro', the Kryvyi Rih strike, and more).
+## How it works
 
-## How it is built
+`main.py` draws the whole page with the Python 3.13 standard library
+only — no Pillow, no network, no fonts on disk. It defines its own
+5×7 bitmap font, draws every scene (COP31 dawn in Antalya, drones
+over Kyiv, radars in Bahrain, and ten more) with plain shapes and a
+fixed random seed, and writes a deterministic PNG.
 
-`main.py` is Python 3.13, standard library only, fully deterministic:
-it draws the whole page in code and writes `entry.png` (1024x1024) to
-`$MAKEFUN_OUTPUT_DIR`. Running it twice produces byte-identical output.
-No network, no external files, no fonts on disk — the lettering is drawn
-from bitmap fonts defined in the code.
+## Run
 
-## Files
+```sh
+mkdir -p out
+MAKEFUN_OUTPUT_DIR=out python3 main.py
+```
 
-- `main.py` — the whole entry: fonts, scenes, map, layout, PNG writer
-- `entry.png` — the rendered page
-- `LICENSE` — MIT
+The output is `out/entry.png`. Running it twice writes byte-identical
+files.
+
+## Bounty
+
+[Sum up 22 November's world news in one image](https://make.fun/bounty/news-image-20261122)
